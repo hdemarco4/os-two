@@ -12,6 +12,8 @@ int main(int arge, char** argv)
 {
     int f;
     int status;
+    int pidp = getpid();
+    int pidc;
 
     struct sigaction *action = new (struct sigaction);
     action->sa_handler = handler;
@@ -22,19 +24,20 @@ int main(int arge, char** argv)
         perror("Error");
     }
     else if (f == 0){
-        execl("./child", "child", (char*)NULL);
-     
+        pidc = getpid;
+
+        kill(pidc, 1);
+        kill(pidc, 10);
+        kill(pidc, 29);
+        kill(pidc, 29);
+        kill(pidc, 29);
+ 
     }
     else{
+        
         waitpid(f, &status, 0);
     }
 
 
 }
 
-
-int child()
-{
-    
-
-}
