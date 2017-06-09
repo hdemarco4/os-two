@@ -8,17 +8,36 @@
 
 using namespace std;
 
+void handler(int signum)
+{
+    cout << "Signal " << signum;    
+}
+
 int main(int arge, char** argv)
 {
     int f;
     int status;
     int pidp = getpid();
     int pidc;
+    int signum;
 
-    struct sigaction *action = new (struct sigaction);
-    action->sa_handler = handler;
-    sigemptyset (&(action->sa_mask));
-    assert (sigaction (signum, action, NULL) == 0);
+    struct sigaction *a1 = new (struct sigaction);
+    a1->sa_handler = handler;
+    sigemptyset (&(a1->sa_mask));
+    assert (sigaction (signum, a1, NULL) == 0);
+    sigaction(SIGHUP, a1);
+
+    struct sigaction *a2 = new (struct sigaction);
+    a2->sa_handler = handler;
+    sigemptyset (&(a2->sa_mask));
+    assert (sigaction (signum, a2, NULL) == 0);
+    sigaction(SIGUSR1, a2);
+
+    struct sigaction *a3 = new (struct sigaction);
+    a3->sa_handler = handler;
+    sigemptyset (&(a3->sa_mask));
+    assert (sigaction (signum, a3, NULL) == 0);
+    sigaction(SIGIO, a3);
 
     if ((f = fork()) < 0){
         perror("Error");
@@ -40,4 +59,3 @@ int main(int arge, char** argv)
 
 
 }
-
