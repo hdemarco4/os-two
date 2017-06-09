@@ -10,7 +10,7 @@ using namespace std;
 
 void handler(int signum)
 {
-    cout << "Signal " << signum;    
+    cout << "Signal " << signum << '\n';    
 }
 
 int main(int arge, char** argv)
@@ -25,25 +25,25 @@ int main(int arge, char** argv)
     a1->sa_handler = handler;
     sigemptyset (&(a1->sa_mask));
     assert (sigaction (signum, a1, NULL) == 0);
-    sigaction(SIGHUP, a1);
+    sigaction(SIGHUP, a1, NULL);
 
     struct sigaction *a2 = new (struct sigaction);
     a2->sa_handler = handler;
     sigemptyset (&(a2->sa_mask));
     assert (sigaction (signum, a2, NULL) == 0);
-    sigaction(SIGUSR1, a2);
+    sigaction(SIGUSR1, a2, NULL);
 
     struct sigaction *a3 = new (struct sigaction);
     a3->sa_handler = handler;
     sigemptyset (&(a3->sa_mask));
     assert (sigaction (signum, a3, NULL) == 0);
-    sigaction(SIGIO, a3);
+    sigaction(SIGIO, a3, NULL);
 
     if ((f = fork()) < 0){
         perror("Error");
     }
     else if (f == 0){
-        pidc = getpid;
+        pidc = getpid();
 
         kill(pidc, 1);
         kill(pidc, 10);
@@ -55,6 +55,11 @@ int main(int arge, char** argv)
     else{
         
         waitpid(f, &status, 0);
+        
+        if(WIFEXITED(status))
+            cout << "Process " << f << " exited with status: " << WEXITSTATUS(status) << '\n';
+        else
+            cout << "Child didn't exit\n";
     }
 
 
