@@ -10,7 +10,18 @@ using namespace std;
 
 void handler(int signum)
 {
-    cout << "Signal " << signum << '\n';    
+    if(signum == 1){
+        cout << "Signal SIGHUP arrived" << '\n';
+    }
+    else if(signum == 10){
+        cout << "Signal SIGUSR1 arrived" << '\n';
+    }   
+    else if(signum == 29){
+        cout << "Signal SIGIO arrived" << '\n';
+    }
+    else{
+        cout << "I don't know this signal" << '\n';
+    }
 }
 
 int main(int arge, char** argv)
