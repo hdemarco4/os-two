@@ -31,26 +31,22 @@ int main(int arge, char** argv)
     int pidp = getpid();
     int pidc;
 
-    struct sigaction *a1 = new (struct sigaction);
-    a1->sa_handler = handler;
-    sigemptyset (&(a1->sa_mask));
-    a1->sa_flags = 0;
-    assert (sigaction (SIGHUP, a1, NULL) == 0);
-    sigaction(SIGHUP, a1, NULL);
+    struct sigaction *act = new (struct sigaction);
+    act->sa_handler = handler;
+    sigemptyset (&(act->sa_mask));
+    act->sa_flags = 0;
+    assert (sigaction (SIGHUP, act, NULL) == 0);
 
-    struct sigaction *a2 = new (struct sigaction);
-    a2->sa_handler = handler;
-    sigemptyset (&(a2->sa_mask));
-    a2->sa_flags = 0;
-    assert (sigaction (SIGUSR1, a2, NULL) == 0);
-    sigaction(SIGUSR1, a2, NULL);
+    act->sa_handler = handler;
+    sigemptyset (&(act->sa_mask));
+    act->sa_flags = 0;
+    assert (sigaction (SIGUSR1, act, NULL) == 0);
 
-    struct sigaction *a3 = new (struct sigaction);
-    a3->sa_handler = handler;
-    sigemptyset (&(a3->sa_mask));
-    a3->sa_flags = 0;
-    assert (sigaction (SIGIO, a3, NULL) == 0);
-    sigaction(SIGIO, a3, NULL);
+    act->sa_handler = handler;
+    sigemptyset (&(act->sa_mask));
+    act->sa_flags = 0;
+    assert (sigaction (SIGIO, act, NULL) == 0);
+
 
     if ((f = fork()) < 0){
         perror("Error");
@@ -75,9 +71,7 @@ int main(int arge, char** argv)
             cout << "Child didn't exit\n";
     }
 
-    delete a1;
-    delete a2;
-    delete a3;
+    delete act;
 
     return 0;
 }
